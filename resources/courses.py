@@ -24,11 +24,11 @@ courses_api = Blueprint('resources.courses', __name__)
 api = Api(courses_api)
 api.add_resource(
     CourseList,
-    '/api/v1/courses',
+    '/courses',
     endpoint='courses'
 )
 api.add_resource(
     Course,
-    '/api/v1/course/<int:id>',
+    '/course/<int:id>',
     endpoint='course'
 )
