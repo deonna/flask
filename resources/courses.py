@@ -1,11 +1,12 @@
-from flask import jsonify
-from flask.ext.restful import Resource
+from flask import jsonify, Blueprint
+from flask.ext.restful import Resource, Api
 
 import models
 
 class CourseList(Resource):
-    def get(self): # Handles GET, returns json response with application/json content type
-        return jsonify({'courses': ['title': 'Python Basics']})
+    def get(self): 
+        # Handles GET, returns json response with application/json content type
+        return jsonify({'courses': {'title': 'Python Basics'}})
 
 class Course(Resource):
     def get(self, id):
@@ -16,3 +17,18 @@ class Course(Resource):
 
     def delete(self, id):
         return jsonify({'title': 'Python Basics'})        
+
+# proxy to the module that sort-of acts like an apply
+# all the actions on the Blueprint don't happen until registered
+courses_api = Blueprint('resources.courses', __name__)
+api = Api(courses_api)
+api.add_resource(
+    CourseList,
+    '/api/v1/courses',
+    endpoint='courses'
+)
+api.add_resource(
+    Course,
+    '/api/v1/course/<int:id>',
+    endpoint='course'
+)
