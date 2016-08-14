@@ -1,9 +1,26 @@
 from flask import jsonify, Blueprint
-from flask.ext.restful import Resource, Api
+from flask.ext.restful import Resource, Api, reqparse
 
 import models
 
 class CourseList(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument(
+            'title',
+            required=True,
+            help='No course title provided.',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'url',
+            required=True,
+            help='No course URL provided.',
+            location=['form', 'json']
+        )
+        super().__init__()
+        
     def get(self): 
         # Handles GET, returns json response with application/json content type
         return jsonify({'courses': {'title': 'Python Basics'}})
