@@ -81,7 +81,7 @@ class Course(Resource):
     @marshal_with(course_fields)
     def put(self, id):
         args = self.reqparse.parse_args()
-        query = models.Course.update(**args).where(mdoels.Course.id==id)
+        query = models.Course.update(**args).where(models.Course.id==id)
         query.execute()
         return (add_reviews(models.course.get(models.Course.id==id), 200, 
                 {'Location': url_for('resources.courses.course', id=id)}
@@ -89,7 +89,9 @@ class Course(Resource):
         )
 
     def delete(self, id):
-        return jsonify({'title': 'Python Basics'})        
+        query = models.Course.delete().where(models.Course.id==id)
+        query.execute()
+        return ('', 204, url_for('resources.courses.courses', id=id))
 
 # proxy to the module that sort-of acts like an apply
 # all the actions on the Blueprint don't happen until registered
