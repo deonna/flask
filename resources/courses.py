@@ -1,7 +1,15 @@
 from flask import jsonify, Blueprint
-from flask.ext.restful import Resource, Api, reqparse, inputs
+from flask.ext.restful import (Resource, Api, reqparse, 
+            inputs, fields, marshal, marshal_with)
 
 import models
+
+course_fields = {
+    'id': fields.Integer,
+    'title': fields.String,
+    'url': fields.String,
+    'reviews': fields.List(fields.String)
+}
 
 class CourseList(Resource):
 
@@ -24,7 +32,9 @@ class CourseList(Resource):
         
     def get(self): 
         # Handles GET, returns json response with application/json content type
-        return jsonify({'courses': {'title': 'Python Basics'}})
+        courses = [marshal(course, course_fields)
+            for course in models.Course.select()]
+        return {'courses': courses}
     
     def post(self):
         args = self.reqparse.parse_args()
