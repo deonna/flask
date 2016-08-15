@@ -1,7 +1,9 @@
 import datetime
 
 from peewee import *
+from argon2 import PasswordHasher
 
+import config
 DATABASE = SqliteDatabase('courses.sqlite')
 
 class Course(Model):

@@ -55,7 +55,7 @@ class CourseList(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         models.Course.create(**args)
-        return jsonify({'courses': {'title': 'Python Basics'}})
+        return add_reviews(course), 201, {'Location': url_for('resources.courses.course', id=course.id)}
 
 class Course(Resource):
     def __init__(self):
@@ -83,9 +83,10 @@ class Course(Resource):
         args = self.reqparse.parse_args()
         query = models.Course.update(**args).where(models.Course.id==id)
         query.execute()
-        return (add_reviews(models.course.get(models.Course.id==id), 200, 
-                {'Location': url_for('resources.courses.course', id=id)}
-            )       
+        return (
+            add_reviews(models.Course.get(models.Course.id==id)), 
+            200,
+            {'Location': url_for('resources.courses.course', id=id)}       
         )
 
     def delete(self, id):
@@ -104,6 +105,6 @@ api.add_resource(
 )
 api.add_resource(
     Course,
-    '/course/<int:id>',
+    '/courses/<int:id>',
     endpoint='course'
 )
