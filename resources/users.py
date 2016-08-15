@@ -23,25 +23,25 @@ def user_or_404(user_id):
 class UserList(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_resource(
+        self.reqparse.add_argument(
             'username',
             required=True,
             help='No username provided.',
             location=['form', 'json']
         )
-        self.reqparse.add_resource(
+        self.reqparse.add_argument(
             'email',
             required=True,
             help='No email provided.',
             location=['form', 'json']
         )
-        self.reqparse.add_resource(
+        self.reqparse.add_argument(
             'password',
             required=True,
             help='No password provided.',
             location=['form', 'json']
         )
-        self.reqparse.add_resource(
+        self.reqparse.add_argument(
             'verify_password',
             required=True,
             help='No password verification provided.',
