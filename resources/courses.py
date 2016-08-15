@@ -78,8 +78,15 @@ class Course(Resource):
     def get(self, id):
         return add_reviews(course_or_404(id))      
 
+    @marshal_with(course_fields)
     def put(self, id):
-        return jsonify({'title': 'Python Basics'})        
+        args = self.reqparse.parse_args()
+        query = models.Course.update(**args).where(mdoels.Course.id==id)
+        query.execute()
+        return (add_reviews(models.course.get(models.Course.id==id), 200, 
+                {'Location': url_for('resources.courses.course', id=id)}
+            )       
+        )
 
     def delete(self, id):
         return jsonify({'title': 'Python Basics'})        
