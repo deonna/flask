@@ -20,12 +20,12 @@ def user_or_404(user_id):
         return user
 
 class UserList(Resource):
-    def __init__:
+    def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_resource(
             'username',
             required=True,
-            help='No username provided.'
+            help='No username provided.',
             location=['form', 'json']
         )
         self.reqparse.add_resource(
@@ -40,6 +40,7 @@ class UserList(Resource):
             help='No password provided.',
             location=['form', 'json']
         )
+        super().__init__()
     
     @marshal_with(user_fields)
     def post(self):
