@@ -6,6 +6,7 @@ from argon2 import PasswordHasher
 import config
 
 DATABASE = config.DATABASE
+HASHER = PasswordHasher()
 
 class User(Model):
     username = CharField(unique=True)
