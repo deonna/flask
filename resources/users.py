@@ -1,4 +1,5 @@
-from flask import jsonify, Blueprint, abort
+import json
+from flask import jsonify, Blueprint, abort, make_response
 
 from flask.ext.restful import (Resource, Api, reqparse, inputs, fields,
                                url_for, marshal, marshal_with)
@@ -40,16 +41,29 @@ class UserList(Resource):
             help='No password provided.',
             location=['form', 'json']
         )
+        self.reqparse.add_resource(
+            'verify_password',
+            required=True,
+            help='No password verification provided.',
+            location=['form', 'json']
+        )
         super().__init__()
     
-    @marshal_with(user_fields)
     def post(self):
         args = self.reqparse.parse_args()
-        user = models.User.create(**args)
-        return (
-            user, 
-            200,
-            {'Location': url_for('resources.users.user', id=user.id)}
+
+        if args.get('password') == args.get('verify_password'):
+            user = models.User.create_user(**args)
+
+            return (
+                marshal(user, user_fields), 
+                201,
+                {'Location': url_for('resources.users.user', id=user.id)}
+            )
+        else:
+            return make_response(
+                json.dumps({'error': 'Password and verification do not match.'}), 
+                400
             )
 
 class User(Resource):
