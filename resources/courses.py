@@ -28,6 +28,7 @@ class CourseList(Resource):
     
     def post(self):
         args = self.reqparse.parse_args()
+        models.Course.create(**args)
         return jsonify({'courses': {'title': 'Python Basics'}})
 
 class Course(Resource):
