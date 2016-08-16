@@ -7,9 +7,7 @@ from flask.ext.restful import (Resource, Api, reqparse, inputs, fields,
 import models
 
 user_fields = {
-    'username': fields.String,
-    'email': fields.String,
-    'password': fields.String
+    'username': fields.String
 }
 
 def user_or_404(user_id):
@@ -48,6 +46,11 @@ class UserList(Resource):
             location=['form', 'json']
         )
         super().__init__()
+
+    def get(self):
+        users = [marshal(user, user_fields)
+            for user in models.User.select()]
+        return {'users': users}
     
     def post(self):
         args = self.reqparse.parse_args()

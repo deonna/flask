@@ -11,7 +11,7 @@ HASHER = PasswordHasher()
 class User(Model):
     username = CharField(unique=True)
     email = CharField(unique=True)
-    password = CharField
+    password = CharField()
 
     class Meta:
         database = DATABASE

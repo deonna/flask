@@ -56,7 +56,7 @@ class CourseList(Resource):
     @auth.login_required
     def post(self):
         args = self.reqparse.parse_args()
-        models.Course.create(**args)
+        course = models.Course.create(**args)
         return add_reviews(course), 201, {'Location': url_for('resources.courses.course', id=course.id)}
 
 class Course(Resource):
